@@ -1,0 +1,27 @@
+[package]
+name = "are_we_touching_exemple"
+authors = ["cubidev"]
+version = "0.2.0"
+edition = "2021"
+license = "MIT"
+description = "A Test Scene for Are-We-Touching lib"
+readme = "README.md"
+homepage = "https://github.com/Cubidev3/Are-We-Touching-Exemple"
+repository = "https://github.com/Cubidev3/Are-We-Touching-Exemple"
+keywords = ["collision", "detection", "gamedev", "api"]
+categories = ["game-development"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+are_we_touching = "0.2.1"
+cubi_vectors = "0.1.8"
+bevy = { version = "0.11.3", features = ["dynamic_linking", "wayland"] }
+
+# Enable a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 1
+
+# Enable high optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
