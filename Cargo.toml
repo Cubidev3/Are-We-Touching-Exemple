@@ -14,7 +14,7 @@ categories = ["game-development"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-are_we_touching = "0.2.1"
+are_we_touching = "0.2.4"
 cubi_vectors = "0.1.8"
 bevy = { version = "0.11.3", features = ["dynamic_linking", "wayland"] }
 

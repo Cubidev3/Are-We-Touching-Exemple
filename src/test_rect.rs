@@ -21,7 +21,7 @@ pub fn spawn_rectangles(mut commands: Commands) {
             custom_size: Some(Vec2::new(20.0, 40.0)),
             ..default()
             },
-        transform: Transform::from_translation(Vec3::new(0., 0., 0.)).with_rotation(Quat::from_rotation_z(30f32.to_radians())),
+        transform: Transform::from_translation(Vec3::new(0., 0., 0.)).with_rotation(Quat::from_rotation_z(230f32.to_radians())),
         ..default()
         },
         RectangleCollider2D {
@@ -32,10 +32,12 @@ pub fn spawn_rectangles(mut commands: Commands) {
 
 pub fn update_rectangles_color(mut rectangles_query: Query<(&mut Sprite, &Transform, &RectangleCollider2D)>, cursor_query: Query<(&Transform, &Cursor)>) {
     let (cursor_transform, cursor_rect) = cursor_query.single();
-    let cursor_shape = create_rectangle_collision_shape(cursor_transform.translation.truncate(), cursor_rect.click_area, 0.0);
+    let cursor_shape = create_rectangle_collision_shape(cursor_transform.translation.truncate(), cursor_rect.click_area, 0.0, false);
 
     for (mut sprite, transform, rectangle) in rectangles_query.iter_mut() {
-        let collision_shape = create_rectangle_collision_shape(transform.translation.truncate(), rectangle.extents, transform.rotation.z);
+        println!("quat rotation {}", transform.rotation);
+
+        let collision_shape = create_rectangle_collision_shape(transform.translation.truncate(), rectangle.extents, transform.rotation.to_axis_angle().1, true);
 
         sprite.color = if convex_shapes_overlap(&collision_shape, &cursor_shape) {
             COLLIDING_COLOR
@@ -45,7 +47,9 @@ pub fn update_rectangles_color(mut rectangles_query: Query<(&mut Sprite, &Transf
     }
 }
 
-pub fn create_rectangle_collision_shape(center: Vec2, extents: Vec2, rotation: f32) -> Rectangle2D {
+pub fn create_rectangle_collision_shape(center: Vec2, extents: Vec2, rotation: f32, print: bool) -> Rectangle2D {
+    if print { println!("rotation {}", rotation); }
+
     let center = Vector2::xy(center.x, center.y);
     let extents = Vector2::xy(extents.x, extents.y);
 

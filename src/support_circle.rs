@@ -13,7 +13,7 @@ pub fn spawn_support_rect(mut commands: Commands) {
     commands.spawn((SpriteBundle {
         sprite: Sprite {
             color: Color::rgb(0.1, 0.7, 0.4),
-            custom_size: Some(Vec2::new(1.0, 1.0)),
+            custom_size: Some(Vec2::new(2.0, 2.0)),
             ..default()
         },
         transform: Transform::from_translation(Vec3::new(0., 0., 0.)),
@@ -28,7 +28,7 @@ pub fn update_translation_support_rect(mut support_query: Query<&mut Transform, 
     let (rect_transform, RectangleCollider2D { extents}) = rectangles_query.single();
     let (cursor_transform) = cursor_query.single();
 
-    let shape = create_rectangle_collision_shape(rect_transform.translation.truncate(), extents.clone(), rect_transform.rotation.z);
+    let shape = create_rectangle_collision_shape(rect_transform.translation.truncate(), extents.clone(), rect_transform.rotation.to_axis_angle().1, false);
     let direction = Vector2::xy(cursor_transform.translation.x - rect_transform.translation.x, cursor_transform.translation.y - rect_transform.translation.y);
 
     if let Some(Vector2 { x, y }) = shape.support(&direction) {
